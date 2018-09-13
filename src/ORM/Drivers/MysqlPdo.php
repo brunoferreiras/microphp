@@ -39,16 +39,26 @@ class MysqlPdo implements DriverStrategy
         $query = sprintf($query, $this->table, $fields, $fieldsToBind);
 
         $this->query = $this->pdo->prepare($query);
-        
-        foreach ($data as $field => $value) {
-            $this->query->bindValue($field, $value);
-        }
+
+        $this->bind($data);
         
         return $this;
     }
 
-    public function select(array $data = [])
+    public function select(array $conditions = [])
     {
+        $query = 'SELECT * FROM ' . $this->table;
+        $data = $this->params($conditions);
+
+        if ($data) {
+            $query .= ' WHERE ' . $data;
+        }
+
+        $this->query = $this->pdo->prepare($query);
+
+        $this->bind($conditions);
+
+        return $this;
     }
 
     public function delete(array $data = [])
@@ -63,9 +73,29 @@ class MysqlPdo implements DriverStrategy
 
     public function first()
     {
+        return $this->query->fetch(\PDO::FETCH_ASSOC);
     }
 
     public function all()
     {
+        return $this->query->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    protected function params($conditions)
+    {
+        $fields = [];
+
+        foreach ($conditions as $field => $value) {
+            $fields[] = $field . '=:' . $field;
+        }
+
+        return implode(', ', $fields);
+    }
+
+    protected function bind($conditions)
+    {
+        foreach ($conditions as $field => $value) {
+            $this->query->bindValue($field, $value);
+        }
     }
 }

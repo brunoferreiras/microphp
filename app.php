@@ -25,6 +25,9 @@ $app->get('/model', function() {
     $model->email = 'fs.brunoferreira@gmail.com';
     $model->save();
 
+    var_dump($model->findAll());
+    var_dump($model->findFirst(1));
+
     return 'Finish';
 });
 
