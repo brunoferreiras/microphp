@@ -13,11 +13,19 @@ $app->get('/hello/{name}', function ($params) {
 });
 
 $app->get('/model', function() {
-    $pdo = new PDO('mysql:host=localhost;dbname=orm_php', 'root', '');
+    $pdo = new PDO('mysql:host=localhost;dbname=orm_php', 'root', 'root');
+
     $driver = new MysqlPdo($pdo);
+    $driver->setTable('users');
 
     $model = new Model;
-    var_dump($driver);
+    $model->setDriver($driver);
+    $model->name = 'Bruno';
+    $model->age = 22;
+    $model->email = 'fs.brunoferreira@gmail.com';
+    $model->save();
+
+    return 'Finish';
 });
 
 $app->run();

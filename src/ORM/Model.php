@@ -8,9 +8,9 @@ class Model
 {
     protected $driver;
 
-    public function setDrive(DriverStrategy $driver)
+    public function setDriver(DriverStrategy $driver)
     {
-        $this->driver;
+        $this->driver = $driver;
         return $this;
     }
 
