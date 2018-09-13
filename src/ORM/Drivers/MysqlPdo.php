@@ -23,6 +23,16 @@ class MysqlPdo implements DriverStrategy
 
     public function save(Model $data)
     {
+        if (!empty($data->id)) {
+            $query = 'UPDATE %s SET %s';
+            $dataToUpdate = $this->params($data);
+            $query = sprintf($query, $this->table, $dataToUpdate);
+            $query .= ' WHERE id = :id';
+            
+            $this->query = $this->pdo->prepare($query);
+            $this->bind($data);
+            return $this;
+        }
         $query = 'INSERT INTO %s (%s) VALUES (%s)';
 
         $fields = [];
