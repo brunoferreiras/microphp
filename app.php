@@ -18,6 +18,8 @@ $app->get('/model', function() {
     $driver = new MysqlPdo($pdo);
     $driver->setTable('users');
 
+    $driver->exec('truncate users;');
+
     $model = new Model;
     $model->setDriver($driver);
     $model->name = 'Bruno';

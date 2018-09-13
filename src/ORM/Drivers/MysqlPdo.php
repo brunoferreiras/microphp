@@ -41,7 +41,7 @@ class MysqlPdo implements DriverStrategy
         $this->query = $this->pdo->prepare($query);
 
         $this->bind($data);
-        
+
         return $this;
     }
 
@@ -67,6 +67,9 @@ class MysqlPdo implements DriverStrategy
 
     public function exec(string $query = null)
     {
+        if ($query) {
+            $this->query = $this->pdo->prepare($query);
+        }
         $this->query->execute();
         return $this;
     }
