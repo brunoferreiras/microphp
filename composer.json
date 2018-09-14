@@ -11,7 +11,8 @@
     },
     "autoload": {
         "psr-4": {
-            "BrunoFerreiras\\": "src"
+            "BrunoFerreiras\\": "src",
+            "App\\": "app"
         }
     },
     "require-dev": {

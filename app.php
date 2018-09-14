@@ -1,7 +1,7 @@
 <?php
 
 use BrunoFerreiras\ORM\Drivers\MysqlPdo;
-use BrunoFerreiras\ORM\Model;
+use App\Model\Users;
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -16,12 +16,10 @@ $app->get('/model', function() {
     $pdo = new PDO('mysql:host=localhost;dbname=orm_php', 'root', '');
 
     $driver = new MysqlPdo($pdo);
-    $driver->setTable('users');
-
     $driver->exec('truncate users;');
 
     echo 'Save register </br>';
-    $model = new Model;
+    $model = new Users;
     $model->setDriver($driver);
     $model->name = 'Bruno';
     $model->age = 22;
