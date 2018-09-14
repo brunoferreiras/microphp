@@ -10,7 +10,7 @@ interface DriverStrategy
 
     public function select(array $data = []);
 
-    public function delete(array $data = []);
+    public function delete(array $data);
 
     public function exec(string $query = null);
 

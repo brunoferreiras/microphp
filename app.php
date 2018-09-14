@@ -13,14 +13,14 @@ $app->get('/hello/{name}', function ($params) {
 });
 
 $app->get('/model', function() {
-    $pdo = new PDO('mysql:host=localhost;dbname=orm_php', 'root', 'root');
+    $pdo = new PDO('mysql:host=localhost;dbname=orm_php', 'root', '');
 
     $driver = new MysqlPdo($pdo);
     $driver->setTable('users');
 
     $driver->exec('truncate users;');
 
-    // Save register
+    echo 'Save register </br>';
     $model = new Model;
     $model->setDriver($driver);
     $model->name = 'Bruno';
@@ -33,19 +33,31 @@ $app->get('/model', function() {
     $model->email = 'other@gmail.com';
     $model->save();
 
-    // Find all registers
+    echo 'Find all registers </br>';
+    echo '<pre>';
     var_dump($model->findAll());
-
-    // Find the first register
+    echo '</pre>';
+    
+    echo 'Find the first register </br>';
+    echo '<pre>';
     var_dump($model->findFirst(1));
+    echo '</pre>';
 
-    // Update register
+    echo 'Update register </br>';
     $model->id = 2;
     $model->name = 'José';
     $model->save();
 
+    echo '<pre>';
     var_dump($model->findFirst(2));
+    echo '</pre>';
 
+    echo 'Delete register </br>'; 
+    $model->id = 1;
+    $model->delete();
+    echo '<pre>';
+    var_dump($model->findAll());
+    echo '</pre>';
     return 'Finish';
 });
 
