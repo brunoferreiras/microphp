@@ -24,15 +24,15 @@ class MysqlPdo implements DriverStrategy
     public function save(Model $data)
     {
         if (!empty($data->id)) {
-            $query = 'UPDATE %s SET %s';
-            $dataToUpdate = $this->params($data);
-            $query = sprintf($query, $this->table, $dataToUpdate);
-            $query .= ' WHERE id = :id';
-            
-            $this->query = $this->pdo->prepare($query);
-            $this->bind($data);
+            $this->update($data);
             return $this;
         }
+        $this->insert($data);
+        return $this;
+    }
+
+    public function insert(Model $data)
+    {
         $query = 'INSERT INTO %s (%s) VALUES (%s)';
 
         $fields = [];
@@ -50,6 +50,22 @@ class MysqlPdo implements DriverStrategy
 
         $this->query = $this->pdo->prepare($query);
 
+        $this->bind($data);
+
+        return $this;
+    }
+
+    public function update(Model $data)
+    {
+        if (empty($data->id)) {
+            throw new \Exception('Id is required');
+        }
+        $query = 'UPDATE %s SET %s';
+        $dataToUpdate = $this->params($data);
+        $query = sprintf($query, $this->table, $dataToUpdate);
+        $query .= ' WHERE id = :id';
+
+        $this->query = $this->pdo->prepare($query);
         $this->bind($data);
 
         return $this;
