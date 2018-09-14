@@ -12,7 +12,7 @@ $app->get('/hello/{name}', function ($params) {
     return $params;
 });
 
-$app->get('/model', function() {
+$app->get('/model', function () {
     $pdo = new PDO('mysql:host=localhost;dbname=orm_php', 'root', '');
 
     $driver = new MysqlPdo($pdo);
@@ -50,7 +50,7 @@ $app->get('/model', function() {
     var_dump($model->findFirst(2));
     echo '</pre>';
 
-    echo 'Delete register </br>'; 
+    echo 'Delete register </br>';
     $model->id = 1;
     $model->delete();
     echo '<pre>';
